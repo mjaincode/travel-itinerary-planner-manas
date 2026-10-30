@@ -1,11 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List
 
 app = FastAPI()
 
-# CORS: frontend se request aane de
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,29 +10,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class TripRequest(BaseModel):
-    destination: str
-    budget: str
-    duration: int
-    interests: List[str]
-
 @app.get("/")
 def home():
     return {"message": "Travel Itinerary Planner API is running!"}
 
 @app.post("/generate-itinerary")
-def generate_itinerary(req: TripRequest):
-    # Ye simple mock response hai. Baad mein real AI connect karna.
-    interests_text = ", ".join(req.interests) if req.interests else "general sightseeing"
-    
+def generate_itinerary(data: dict):
+    destination = data.get("destination", "Unknown")
+    budget = data.get("budget", "Not specified")
+    duration = data.get("duration", 3)
+    interests = data.get("interests", [])
+
+    interests_text = ", ".join(interests) if interests else "general sightseeing"
+
     itinerary = f"""
-    🎯 Personalized Trip to {req.destination}
+    🎯 Personalized Trip to {destination}
     
-    📅 Duration: {req.duration} days
-    💰 Budget: {req.budget}
+    📅 Duration: {duration} days
+    💰 Budget: {budget}
     🎯 Interests: {interests_text}
     
-    Day 1: Arrive in {req.destination}. Check into hotel and explore the local market.
+    Day 1: Arrive in {destination}. Check into hotel and explore the local market.
     Day 2: Visit top attractions based on your interests: {interests_text}.
     Day 3: Enjoy local cuisine, shopping, and depart.
     
