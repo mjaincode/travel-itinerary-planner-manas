@@ -12,7 +12,7 @@ export default function App() {
   const [error, setError] = useState('')
 
   // ⚠️ Yahan apna Render backend URL daalna hai deploy karne ke baad
-  const API_URL = 'https://your-backend-url.onrender.com'
+  const API_URL = 'https://travel-itinerary-planner-manas.onrender.comhttps://travel-itinerary-planner-manas.onrender.com'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
